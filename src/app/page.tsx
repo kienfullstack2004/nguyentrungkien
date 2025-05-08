@@ -1,103 +1,130 @@
-import Image from "next/image";
+'use client';
+import { useRouter } from 'next/navigation'
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { icons } from '../../public/utils/icons';
+import { useState } from 'react';
+
+const { HiMenu, IoIosClose } = icons;
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const path = useRouter();
+  const [isMenu, setMenu] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const handdleMenu = () => {
+    setMenu(true);
+  }
+
+  const handdleClose = () => {
+    setMenu(false);
+  }
+
+  return (
+    <div className="overflow-hidden">
+      <div className="header-image">
+
+      </div>
+      <div className="header-overload">
+      </div>
+      <div className="header-info">
+        <div className="h-[15%] flex min-md:items-center max-md:justify-between text-white">
+          <div className="min-md:w-[90%] m-auto max-md:w-[80%] flex items-center justify-between">
+            <div className="min-md:text-[25px] max-md:text-[12px] font-bold">
+              <Link href={'/'}>
+                nguyentrungkien.com
+              </Link>
+            </div>
+            <ul className="max-md:hidden flex items-center gap-[35px]">
+              <li className="hover:text-blue-500">
+                <a href="/courses">
+                  Khoá học
+                </a>
+              </li>
+              <li className="hover:text-blue-500">
+                <a href="/news">
+                  Tin tức
+                </a>
+              </li>
+              <li className="hover:text-blue-500">
+                <a href="/contact">
+                  Liên hệ
+                </a>
+              </li>
+              <li className="hover:text-blue-500">
+                <a href="/support">
+                  Báo cáo
+                </a>
+              </li>
+              <li>
+                <Button className='hover:cursor-pointer' onClick={() => path.push('/register')} variant={'outline'}>
+                  Đăng ký
+                </Button>
+              </li>
+              <li >
+                <Button className='hover:cursor-pointer' onClick={() => path.push('/login')} variant={'outline'}>
+                  Đăng nhập
+                </Button>
+              </li>
+            </ul>
+            <div onClick={handdleMenu} className='min-md:hidden flex items-center'>
+              <HiMenu size={20} color='#fff' />
+            </div>
+            {isMenu && <div className='min-md:hidden fixed bg-white top-0 left-0 right-0 bottom-0'>
+              <div className='h-[10%] w-[80%] m-auto flex items-center justify-between'>
+                <div className='text-[20px] text-[#000] font-bold'>
+                  nguyentrungkien.com
+                </div>
+                <div onClick={handdleClose} className='flex items-center'>
+                  <IoIosClose size={25} color='#ccc' />
+                </div>
+              </div>
+              <div className='h-[90%] flex flex-col items-center justify-between'>
+                <ul className="flex flex-col text-[25px] text-black items-center">
+                  <li className="hover:bg-[#ddd] p-5 ">
+                    <a href="/courses">
+                      Khoá học
+                    </a>
+                  </li>
+                  <li className="hover:bg-[#ddd] p-5 ">
+                    <a href="/news">
+                      Tin tức
+                    </a>
+                  </li>
+                  <li className="hover:bg-[#ddd] p-5 ">
+                    <a href="/contact">
+                      Liên hệ
+                    </a>
+                  </li>
+                  <li className="hover:bg-[#ddd] p-5 ">
+                    <a href="/support">
+                      Báo cáo
+                    </a>
+                  </li>
+                </ul>
+                <div className='flex items-center gap-4 mb-5'>
+                  <Button className='hover:cursor-pointer bg-black text-white' onClick={() => path.push('/register')} variant={'outline'}>
+                    Đăng ký
+                  </Button>
+                  <Button className='hover:cursor-pointer bg-black text-white' onClick={() => path.push('/login')} variant={'outline'}>
+                    Đăng nhập
+                  </Button>
+                </div>
+              </div>
+            </div>}
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <div className='w-[90%] h-[85%] justify-center flex flex-col gap-3 m-auto text-white'>
+          <div className='font-bold min-md:text-[25px] max-md:text-[20px]'>
+            Website tin tức & khoá học cá nhân của Nguyễn Trung Kiên
+          </div>
+          <p className='min-md:text-[18px] max-md:text-[15px]'>Trang web giúp người đọc có những trải nhiệm khám phá mới mẻ và các bài học bổ ích khám phá ngay.</p>
+          <div>
+            <Button onClick={()=>path.push('home')} className='hover:cursor-pointer' variant={'outline'}>
+              Khám phá
+            </Button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,35 +1,34 @@
 'use client'
 
-<<<<<<< HEAD
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { FormField,Form, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import { FormField, Form, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import {z} from "zod";
+import { z } from "zod";
 
 const FormBody = z.object({
 	email: z.string().email({ message: "Vui lòng nhập đúng theo đuôi có dạng @gmail.com" }),
 	password: z.string().min(6, { message: "Vui lòng nhập đủ 6 kí tự !" }),
-	username: z.string().min(6,{message:"Vui lòng nhập đủ 6 ký tự !"})
+	username: z.string().min(6, { message: "Vui lòng nhập đủ 6 ký tự !" })
 }).strict();
 
 type FormBodyType = z.infer<typeof FormBody>;
 
 export default function Page() {
-	
+
 	const form = useForm<FormBodyType>({
-       resolver: zodResolver(FormBody),
-	   defaultValues:{
-          password:"",
-		  email:"",
-		  username:""
-	   }
+		resolver: zodResolver(FormBody),
+		defaultValues: {
+			password: "",
+			email: "",
+			username: ""
+		}
 	})
 
-    function onSubmit(data:FormBodyType){
-       console.log(data);
+	function onSubmit(data: FormBodyType) {
+		console.log(data);
 	}
 
 	return (
@@ -47,7 +46,7 @@ export default function Page() {
 									<FormControl>
 										<Input className="w-full input outline-none my-1" placeholder="Nhập email của bạn vào đây ..." {...field} />
 									</FormControl>
-									<FormMessage  className="text-red-600 mt-[-8px]"/>
+									<FormMessage className="text-red-600 mt-[-8px]" />
 								</FormItem>
 							)}
 						/>
@@ -60,7 +59,7 @@ export default function Page() {
 									<FormControl>
 										<Input className="w-full input outline-none my-4" placeholder="Nhập username của bạn vào đây ..." {...field} />
 									</FormControl>
-									<FormMessage className="mt-[-20px] text-red-600"/>
+									<FormMessage className="mt-[-20px] text-red-600" />
 								</FormItem>
 							)}
 						/>
@@ -73,7 +72,7 @@ export default function Page() {
 									<FormControl>
 										<Input type="password" className="w-full input outline-none my-4" placeholder="Nhập mật khẩu của bạn vào đây ..." {...field} />
 									</FormControl>
-									<FormMessage className="mt-[-20px] text-red-600"/>
+									<FormMessage className="mt-[-20px] text-red-600" />
 								</FormItem>
 							)}
 						/>
@@ -83,17 +82,6 @@ export default function Page() {
 					</form>
 				</Form>
 			</Card>
-		</div>
-=======
+		</div>)
 
-export default function Page() {
-	
-
-	return (
-		<>
-			<h1>Page </h1>
-			<p>Page content</p>
-		</>
->>>>>>> 45e08c9ef95b666182bcf34a1fdd9a9848e9807f
-	);
 }

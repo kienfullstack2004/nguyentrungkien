@@ -5,7 +5,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import {
 	Form,
 	FormControl,
-	FormDescription,
 	FormField,
 	FormItem,
 	FormLabel,
@@ -49,7 +48,7 @@ export default function Page() {
 								<FormItem>
 									<FormLabel>Email</FormLabel>
 									<FormControl>
-										<Input className="w-full outline-none my-1" placeholder="Nhập email của bạn vào đây ..." {...field} />
+										<Input className="w-full input outline-none my-1" placeholder="Nhập email của bạn vào đây ..." {...field} />
 									</FormControl>
 									<FormMessage  className="text-red-600 mt-[-8px]"/>
 								</FormItem>
@@ -62,7 +61,7 @@ export default function Page() {
 								<FormItem>
 									<FormLabel className="mt-5 mb-[-12px]">Password</FormLabel>
 									<FormControl>
-										<Input type="password" className="w-full outline-none my-4" placeholder="Nhập mật khẩu của bạn vào đây ..." {...field} />
+										<Input type="password" className="w-full input outline-none my-4" placeholder="Nhập mật khẩu của bạn vào đây ..." {...field} />
 									</FormControl>
 									<FormMessage className="mt-[-20px] text-red-600"/>
 								</FormItem>

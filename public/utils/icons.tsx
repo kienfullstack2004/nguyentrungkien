@@ -7,6 +7,9 @@ import { IoMdLogOut } from "react-icons/io";
 import { IoSettingsSharp } from "react-icons/io5";
 import { IoIosSend } from "react-icons/io";
 import { IoIosClose } from "react-icons/io";
+import { FaBell } from "react-icons/fa6";
+import { BiSolidMessageRoundedDetail } from "react-icons/bi";
+import { IoIosAdd } from "react-icons/io";
 
 export const icons = {
     HiMenu,
@@ -17,5 +20,8 @@ export const icons = {
     IoMdLogOut,
     IoSettingsSharp,
     IoIosSend,
-    IoIosClose
+    IoIosClose,
+    FaBell,
+    BiSolidMessageRoundedDetail,
+    IoIosAdd
 }

@@ -7,6 +7,7 @@ import moment from "moment";
 import "moment/locale/vi";
 import { useState } from "react";
 import { icons } from "../../../public/utils/icons";
+import Image from "next/image";
 
 const { IoIosAdd, IoIosClose } = icons;
 
@@ -28,7 +29,7 @@ export default function Page() {
 			<div className="w-[90%] flex gap-6 m-auto">
 				<div className="max-md:w-full min-md:w-[70%]">
 					<Link href={'/'} className="flex flex-col">
-						<img src={'https://www.excelptp.com/wp-content/uploads/2023/05/full-stack-banner-img.jpg'} className="w-full min-md:h-[500px] " alt="logo" />
+						<Image src={'https://res.cloudinary.com/dp6cr7ea5/image/upload/v1745409070/person/zu3jarzz0q8lpw8rnhwf.jpg'} className="w-full " width={500} height={500} alt="logo" />
 						<div className="my-3 font-extrabold font-mono text-justify">
 							Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate quae nisi obcaecati tempora iure cupiditate, tenetur suscipit numquam veniam soluta libero delectus laborum porro quam eius labore vitae beatae tempore?
 						</div>
@@ -40,7 +41,7 @@ export default function Page() {
 					</Link>
 					<div className="grid min-md:grid-cols-3 max-md:grid-cols-1 gap-8">
 						<Link href={'/'} className="my-3 flex flex-col">
-							<img src={'https://www.excelptp.com/wp-content/uploads/2023/05/full-stack-banner-img.jpg'} alt="logo" />
+							<Image src={'https://res.cloudinary.com/dp6cr7ea5/image/upload/v1745409070/person/zu3jarzz0q8lpw8rnhwf.jpg'} width={500} height={500} alt="logo" />
 							<div className="font-extrabold font-mono text-justify my-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit, facilis voluptas. Totam suscipit voluptatem quas iure sequi modi cupiditate facere excepturi officia iusto ullam quasi, sed officiis qui alias mollitia.</div>
 							<div className="flex justify-end">
 								<div className="text-[#ccc] text-[12px]">
@@ -54,7 +55,7 @@ export default function Page() {
 				</div>
 				<div className="min-md:w-[30%]  max-md:hidden  flex flex-col gap-4">
 					<Link href={'/'} className="">
-						<img src={'https://www.excelptp.com/wp-content/uploads/2023/05/full-stack-banner-img.jpg'} className="object-center" />
+						<Image src={'https://res.cloudinary.com/dp6cr7ea5/image/upload/v1745409070/person/zu3jarzz0q8lpw8rnhwf.jpg'} width={500} height={500} alt="logo" className="object-center" />
 						<div className="text-justify">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Obcaecati veniam aliquid, repellat saepe ex at sit unde sequi odit? Saepe tempora possimus quibusdam labore commodi rerum veniam temporibus perferendis perspiciatis.</div>
 					</Link>
 
@@ -70,14 +71,14 @@ export default function Page() {
 					<ul className="flex items-center gap-[35px]">
 
 						<li className="hover:text-blue-600">
-							<a href="/courses">
+							<Link href="/courses">
 								Khoá học
-							</a>
+							</Link>
 						</li>
 						<li className="hover:text-blue-600">
-							<a href="/news">
+							<Link href="/news">
 								Tin tức
-							</a>
+							</Link>
 						</li>
 					</ul>
 				</div>}

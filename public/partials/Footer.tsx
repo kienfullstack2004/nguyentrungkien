@@ -6,7 +6,8 @@ import emailjs from "@emailjs/browser";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form,FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import Link from "next/link";
 const { AiFillCopyrightCircle } = icons;
 
 const FormBoy = z.object({
@@ -25,7 +26,7 @@ export default function Footer() {
     })
 
     function onSubmit(data: FormBoyType) {
-        emailjs.sendForm('service_0vfekc9', 'template_6ega6nr', data.message, 'ZsnYH_J_vw7MZsuIw');  
+        emailjs.sendForm('service_0vfekc9', 'template_6ega6nr', data.message, 'ZsnYH_J_vw7MZsuIw');
     }
 
     return <div className="text-white flex flex-col bg-[#181821] ">
@@ -35,21 +36,21 @@ export default function Footer() {
                 <ul className="flex flex-col justify-center ">
                     <li className="flex text-[12px]">
                         <div>Email :</div>
-                        <a href="">
+                        <Link href="">
                             nkien9450@gmail.com
-                        </a>
+                        </Link>
                     </li>
                     <li className="flex text-[12px]">
                         <div>Điện thoại :</div>
-                        <a href="tel:0336099317">
+                        <Link href="tel:0336099317">
                             0336 099 317
-                        </a>
+                        </Link>
                     </li>
                     <li className="flex text-[12px]">
                         <div>Địa chỉ :</div>
-                        <a href="">
+                        <Link href="">
                             K54/32 Ông Ích Khiêm, P.Thanh Bình, Q.Hải Châu, TP.Đà Nẵng
-                        </a>
+                        </Link>
                     </li>
                 </ul>
             </div>
@@ -57,19 +58,19 @@ export default function Footer() {
                 <h1 className="font-bold text-[30px] mt-5 mb-5">Công cụ</h1>
                 <ul className="flex flex-col justify-center ">
                     <li className="flex text-[12px]">
-                        <a href="">
+                        <Link href="">
                             Rút ngắn liên kết
-                        </a>
+                        </Link>
                     </li>
                     <li className="flex text-[12px]">
-                        <a href="">
+                        <Link href="">
                             Tạo gmail miễn phí
-                        </a>
+                        </Link>
                     </li>
                     <li className="flex text-[12px]">
-                        <a href="">
+                        <Link href="">
                             Tạo Website blogger
-                        </a>
+                        </Link>
                     </li>
                 </ul>
             </div>
@@ -77,14 +78,14 @@ export default function Footer() {
                 <h1 className="font-bold text-[30px] mt-5 mb-5">Điều khoản & bảo mật</h1>
                 <ul className="flex flex-col justify-center ">
                     <li className="flex text-[12px]">
-                        <a href="">
+                        <Link href="">
                             Điều khoản
-                        </a>
+                        </Link>
                     </li>
                     <li className="flex text-[12px]">
-                        <a href="">
+                        <Link href="">
                             Bảo mật
-                        </a>
+                        </Link>
                     </li>
                 </ul>
             </div>

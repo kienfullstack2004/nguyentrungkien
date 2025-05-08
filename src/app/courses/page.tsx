@@ -5,6 +5,7 @@ import Footer from "../../../public/partials/Footer";
 import Header from "../../../public/partials/Header";
 import { useState } from "react";
 import { icons } from "../../../public/utils/icons";
+import Image from "next/image";
 
 const { IoIosAdd, IoIosClose } = icons;
 
@@ -28,11 +29,13 @@ export default function Page() {
 
 					<Link href={'/'}>
 						<div className="flex flex-col">
-							<img src={'https://cdn-media.sforum.vn/storage/app/media/anh-dep-8.jpg'} alt="logo" />
+							<Image src={'https://res.cloudinary.com/dp6cr7ea5/image/upload/v1745409070/person/zu3jarzz0q8lpw8rnhwf.jpg'} height={500} width={500}  alt="logo" />
 							<div className="font-bold font-mono my-3 text-[16px] flex items-center gap-2"><span>1.200.000</span> <span className="line-through text-[12px] text-red-500">1.500.000</span></div>
 							<div className="font-bold font-mono">Khoá học Fullstack</div>
 						</div>
 					</Link>
+					
+					
 
 
 				</div>
@@ -47,14 +50,14 @@ export default function Page() {
 					<ul className="flex items-center gap-[35px]">
 
 						<li className="hover:text-blue-600">
-							<a href="/courses">
+							<Link href="/courses">
 								Khoá học
-							</a>
+							</Link>
 						</li>
 						<li className="hover:text-blue-600">
-							<a href="/news">
+							<Link href="/news">
 								Tin tức
-							</a>
+							</Link>
 						</li>
 					</ul>
 				</div>}

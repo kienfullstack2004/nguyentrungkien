@@ -49,14 +49,14 @@ export default function Header() {
                 </div>
                 <ul className="flex items-center gap-[35px]">
                     <li className="hover:text-blue-600">
-                        <a href="/courses">
+                        <Link href="/courses">
                             Khoá học
-                        </a>
+                        </Link>
                     </li>
                     <li className="hover:text-blue-600">
-                        <a href="/news">
+                        <Link href="/news">
                             Tin tức
-                        </a>
+                        </Link>
                     </li>
                 </ul>
             </div>
@@ -162,10 +162,10 @@ export default function Header() {
                         </div>
                         <ul className="flex flex-col">
                             <li className="hover:bg-[#ddd]">
-                                <a href="/user" className="flex p-4 gap-3"><div><FaUserEdit size={20} /></div><span>Quản lý tài khoản</span></a>
+                                <Link href="/user" className="flex p-4 gap-3"><div><FaUserEdit size={20} /></div><span>Quản lý tài khoản</span></Link>
                             </li>
                             <li className="hover:bg-[#ddd]">
-                                <a href="/user" className="flex p-4 gap-3"><div><IoMdLogOut size={20} /></div><span>Đăng xuất</span></a>
+                                <Link href="/user" className="flex p-4 gap-3"><div><IoMdLogOut size={20} /></div><span>Đăng xuất</span></Link>
                             </li>
                         </ul>
                     </div>}
@@ -210,13 +210,13 @@ export default function Header() {
             <div className="h-[70%]">
                 <ul className="flex flex-col">
                     <li className="py-4 px-12 hover:bg-[#ddd]">
-                        <a href="#" className="flex gap-2 items-center"><FaUserEdit size={20} /> Quản lý tài khoản cá nhân</a>
+                        <Link href="#" className="flex gap-2 items-center"><FaUserEdit size={20} /> Quản lý tài khoản cá nhân</Link>
                     </li>
                     <li className="py-4 px-12 hover:bg-[#ddd]">
-                        <a href="#" className="flex gap-2 items-center"><FaUserEdit size={20} /> Quản lý tài khoản cá nhân</a>
+                        <Link href="#" className="flex gap-2 items-center"><FaUserEdit size={20} /> Quản lý tài khoản cá nhân</Link>
                     </li>
                     <li className="py-4 px-12 hover:bg-[#ddd]">
-                        <a href="#" className="flex gap-2 items-center"><IoMdLogOut size={20} /> Đăng xuất</a>
+                        <Link href="#" className="flex gap-2 items-center"><IoMdLogOut size={20} /> Đăng xuất</Link>
                     </li>
                 </ul>
                 <div className="mt-5 text-center" onClick={handdleClose}>

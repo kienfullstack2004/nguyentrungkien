@@ -36,24 +36,24 @@ export default function Home() {
             </div>
             <ul className="max-md:hidden flex items-center gap-[35px]">
               <li className="hover:text-blue-500">
-                <a href="/courses">
+                <Link href="/courses">
                   Khoá học
-                </a>
+                </Link>
               </li>
               <li className="hover:text-blue-500">
-                <a href="/news">
+                <Link href="/news">
                   Tin tức
-                </a>
+                </Link>
               </li>
               <li className="hover:text-blue-500">
-                <a href="/contact">
+                <Link href="/contact">
                   Liên hệ
-                </a>
+                </Link>
               </li>
               <li className="hover:text-blue-500">
-                <a href="/support">
+                <Link href="/support">
                   Báo cáo
-                </a>
+                </Link>
               </li>
               <li>
                 <Button className='hover:cursor-pointer' onClick={() => path.push('/register')} variant={'outline'}>
@@ -81,24 +81,24 @@ export default function Home() {
               <div className='h-[90%] flex flex-col items-center justify-between'>
                 <ul className="flex flex-col text-[25px] text-black items-center">
                   <li className="hover:bg-[#ddd] p-5 ">
-                    <a href="/courses">
+                    <Link href="/courses">
                       Khoá học
-                    </a>
+                    </Link>
                   </li>
                   <li className="hover:bg-[#ddd] p-5 ">
-                    <a href="/news">
+                    <Link href="/news">
                       Tin tức
-                    </a>
+                    </Link>
                   </li>
                   <li className="hover:bg-[#ddd] p-5 ">
-                    <a href="/contact">
+                    <Link href="/contact">
                       Liên hệ
-                    </a>
+                    </Link>
                   </li>
                   <li className="hover:bg-[#ddd] p-5 ">
-                    <a href="/support">
+                    <Link href="/support">
                       Báo cáo
-                    </a>
+                    </Link>
                   </li>
                 </ul>
                 <div className='flex items-center gap-4 mb-5'>
@@ -119,7 +119,7 @@ export default function Home() {
           </div>
           <p className='min-md:text-[18px] max-md:text-[15px]'>Trang web giúp người đọc có những trải nhiệm khám phá mới mẻ và các bài học bổ ích khám phá ngay.</p>
           <div>
-            <Button onClick={()=>path.push('home')} className='hover:cursor-pointer' variant={'outline'}>
+            <Button onClick={() => path.push('home')} className='hover:cursor-pointer' variant={'outline'}>
               Khám phá
             </Button>
           </div>

@@ -11,8 +11,9 @@ import 'swiper/css/scrollbar';
 import PostPopular from "../../../public/Page/PostPopular";
 import { icons } from "../../../public/utils/icons";
 import { useState } from "react";
+import Link from "next/link";
 
-const { IoIosAdd,IoIosClose } = icons;
+const { IoIosAdd, IoIosClose } = icons;
 
 export default function Page() {
 
@@ -29,7 +30,7 @@ export default function Page() {
 	return (
 		<div className="">
 			<Header />
-			<div className=" flex flex-col my-12 w-[90%] m-auto">
+			<div className="flex flex-col my-12 w-[90%] m-auto">
 				<div className="overflow-hidden">
 					<Swiper
 						modules={[Navigation, Pagination, Scrollbar, A11y]}
@@ -54,20 +55,20 @@ export default function Page() {
 				</div>
 				{isPage && <div data-aos="fade-up"
 					data-aos-duration="1000" className="fixed bottom-0 h-[100px] z-20 bg-white left-0 right-0 flex items-center justify-center shadow-2xl">
-					 <div className="absolute right-3 top-3">
-					   <IoIosClose onClick={handdleClose} size={30} color="#000"/>	
-					</div> 
+					<div className="absolute right-3 top-3">
+						<IoIosClose onClick={handdleClose} size={30} color="#000" />
+					</div>
 					<ul className="flex items-center gap-[35px]">
-					 
+
 						<li className="hover:text-blue-600">
-							<a href="/courses">
+							<Link href="/courses">
 								Khoá học
-							</a>
+							</Link>
 						</li>
 						<li className="hover:text-blue-600">
-							<a href="/news">
+							<Link href="/news">
 								Tin tức
-							</a>
+							</Link>
 						</li>
 					</ul>
 				</div>}

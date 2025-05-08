@@ -1,5 +1,6 @@
 'use client'
 
+<<<<<<< HEAD
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { FormField,Form, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
@@ -83,5 +84,16 @@ export default function Page() {
 				</Form>
 			</Card>
 		</div>
+=======
+
+export default function Page() {
+	
+
+	return (
+		<>
+			<h1>Page </h1>
+			<p>Page content</p>
+		</>
+>>>>>>> 45e08c9ef95b666182bcf34a1fdd9a9848e9807f
 	);
 }

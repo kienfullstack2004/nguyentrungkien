@@ -11,7 +11,8 @@ const nextConfig: NextConfig = {
         pathname:'/dp6cr7ea5/image/upload/**'
       }
     ]
-  }
+  },
+   reactStrictMode: false,
 };
 
 export default nextConfig;

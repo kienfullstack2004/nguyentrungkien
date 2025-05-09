@@ -32,7 +32,7 @@ export default function Page() {
 	})
 
 	function onSubmit(data: FormBodyType) {
-		console.log(data);
+	   console.log(data)	
 	}
 
 	return (

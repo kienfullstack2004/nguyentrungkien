@@ -22,6 +22,14 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "public/store/reducer/rootReducer.jsx",
+    "public/config/redux.jsx",
+    "public/config/ProviderStore.jsx"
+  ],
   "exclude": ["node_modules"]
 }

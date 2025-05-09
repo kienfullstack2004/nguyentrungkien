@@ -10,6 +10,11 @@ import { IoIosClose } from "react-icons/io";
 import { FaBell } from "react-icons/fa6";
 import { BiSolidMessageRoundedDetail } from "react-icons/bi";
 import { IoIosAdd } from "react-icons/io";
+import { RiBook2Fill } from "react-icons/ri";
+import { GiKnightBanner } from "react-icons/gi";
+import { TiStopwatch } from "react-icons/ti";
+import { FaBitcoin } from "react-icons/fa";
+import { MdOutlineBookmark } from "react-icons/md";
 
 export const icons = {
     HiMenu,
@@ -23,5 +28,10 @@ export const icons = {
     IoIosClose,
     FaBell,
     BiSolidMessageRoundedDetail,
-    IoIosAdd
+    IoIosAdd,
+    RiBook2Fill,
+    GiKnightBanner,
+    TiStopwatch,
+    FaBitcoin,
+    MdOutlineBookmark
 }

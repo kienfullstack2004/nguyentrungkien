@@ -19,12 +19,12 @@ export function AppSidebar() {
 
     return (
         <Sidebar>
-            <SidebarHeader>
+            <SidebarHeader className="bg-[#fff]">
                 <SidebarGroup>
                     <SidebarGroupLabel>TRANG QUẢN LÝ TÀI KHOẢN</SidebarGroupLabel>
                 </SidebarGroup>
             </SidebarHeader>
-            <SidebarContent>
+            <SidebarContent className="bg-[#fff]">
                 <SidebarGroup>
                     <SidebarGroupContent>
                         <SidebarMenu>

@@ -15,9 +15,13 @@ export default function Page() {
 	return (
 		<div>
 			<div className="mt-[-9px] w-full flex justify-end">
-				<BreadcrumbTag tags={path} />
+				<BreadcrumbTag tags={path}/>
 			</div>
-			<p>Page content</p>
+			<div className="grid min-md:grid-cols-2 max-md:grid-cols-1 gap-3">
+				<iframe width="560" height="315" src="https://www.youtube.com/embed/nMp4wOUMfdc?si=2jMvKMj-B1Bq6Q5E" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+				<iframe width="560" height="315" src="https://www.youtube.com/embed/nMp4wOUMfdc?si=2jMvKMj-B1Bq6Q5E" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+				<iframe width="560" height="315" src="https://www.youtube.com/embed/nMp4wOUMfdc?si=2jMvKMj-B1Bq6Q5E" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+			</div>
 		</div>
 	);
 }

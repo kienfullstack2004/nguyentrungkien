@@ -7,6 +7,9 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { apiRegister } from "../../../public/services/authApi";
+import { useEffect } from "react";
+import { apiUsers } from "../../../public/services/userApi";
 
 const FormBody = z.object({
 	email: z.string().email({ message: "Vui lòng nhập đúng theo đuôi có dạng @gmail.com" }),
@@ -27,9 +30,19 @@ export default function Page() {
 		}
 	})
 
-	function onSubmit(data: FormBodyType) {
-		console.log(data);
+	async function onSubmit(data: FormBodyType) {
+		console.log(data)
+		const fetchData = await apiRegister(data);
+		console.log(fetchData);
 	}
+
+	useEffect(()=>{
+       const fetchData = async() => {
+		  const responsive = await apiUsers();
+		  console.log(responsive?.data?.users)
+	   }
+	   fetchData();
+	},[])
 
 	return (
 		<div className="h-[100vh] flex items-center justify-center">

@@ -1,6 +1,7 @@
 import axios from "axios";
 const instance = axios.create({
-    baseURL:"https://nguyentrungkien-api.onrender.com/",
+  // https://nguyentrungkien-api.onrender.com/
+    baseURL:"http://localhost:5000/",
 });
 
 // Thêm một bộ đón chặn request

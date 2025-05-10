@@ -31,12 +31,12 @@ export function AppSidebar() {
 
     return (
         <Sidebar>
-            <SidebarHeader>
+            <SidebarHeader className="bg-[#fff]">
                 <SidebarGroup>
                     <SidebarGroupLabel>TRANG QUẢN LÝ CỦA {path === 'user' ? 'CÁ NHÂN' : 'ADMIN'}</SidebarGroupLabel>
                 </SidebarGroup>
             </SidebarHeader>
-            <SidebarContent>
+            <SidebarContent className="bg-[#fff]">
                 <SidebarGroup>
                     <SidebarGroupContent>
                         <SidebarMenu>
@@ -53,7 +53,7 @@ export function AppSidebar() {
                     </SidebarGroupContent>
                 </SidebarGroup>
             </SidebarContent>
-            <SidebarFooter>
+            <SidebarFooter className="bg-[#fff]">
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <DropdownMenu>

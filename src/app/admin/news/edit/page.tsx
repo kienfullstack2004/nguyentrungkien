@@ -29,7 +29,7 @@ export default function Page() {
 
 	return (
 		<div>
-			<div className="mt-[-9px] w-full flex justify-end">
+			<div className="mt-[-9px] w-full flex min-md:justify-end max-md:justify-start">
 				<BreadcrumbTag tags={path} />
 			</div>
 			<div className="my-4">

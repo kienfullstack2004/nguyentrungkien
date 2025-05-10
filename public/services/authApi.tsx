@@ -10,6 +10,7 @@ export const apiRegister = (payload:RegisterType) => new Promise(async(relsove,r
             url:'register',
             data:payload
         })
+        console.log(payload)
         relsove(responsive); 
     } catch (err) {
         return reject(err);  

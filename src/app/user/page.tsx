@@ -11,7 +11,7 @@ export default function Page() {
 	const [path, setPath] = useState('')
 
 	useEffect(() => {
-		setPath(location.href.split('http://localhost:3000/')[1]);
+		setPath(location.href ??.split('http://localhost:3000/')[1]);
 	}, [])
 
 
@@ -26,10 +26,10 @@ export default function Page() {
 				</Label>
 				<div className="grid min-md:grid-cols-3 max-md:grid-cols-1 gap-2 my-3">
 					<Card className="border border-[#ccc]">
-                         <CardHeader>Bài viết</CardHeader> 
-						 <CardContent className="text-3xl font-bold text-blue-400 flex items-center justify-center">
-							<CountUp end={120} duration={10}/>
-						 </CardContent>
+						<CardHeader>Bài viết</CardHeader>
+						<CardContent className="text-3xl font-bold text-blue-400 flex items-center justify-center">
+							<CountUp end={120} duration={10} />
+						</CardContent>
 					</Card>
 				</div>
 			</div>

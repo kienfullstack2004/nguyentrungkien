@@ -22,9 +22,9 @@ export function AppSidebar() {
 
     useEffect(() => {
         if (location.href.split('http://localhost:3000/')[1].split('/').length > 1) {
-            setPath(location.href.split('http://localhost:3000/')[1].toString().split('/')[0]);
+            setPath(location.href?.split('http://localhost:3000/')[1].toString().split('/')[0]);
         } else {
-            setPath(location.href.split('http://localhost:3000/')[1]);
+            setPath(location.href?.split('http://localhost:3000/')[1]);
         }
     }, [])
 

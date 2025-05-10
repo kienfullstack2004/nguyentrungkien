@@ -26,7 +26,7 @@ export default function Page() {
 	const [path, setPath] = useState('')
 
 	useEffect(() => {
-		setPath(location.href.split('http://localhost:3000/')[1]);
+		setPath(location.href?.split('http://localhost:3000/')[1]);
 	}, [])
 
 	const form = useForm<FormBodyType>({
@@ -106,7 +106,7 @@ export default function Page() {
 								</FormItem>
 							)}
 						/>
-						
+
 						<div className="mt-4 text-center bg-[#000] text-white rounded-md hover:bg-[#ccc] hover:cursor-pointer">
 							<Button type="submit">Thêm mới bài viết</Button>
 						</div>

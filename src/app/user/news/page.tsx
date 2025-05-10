@@ -10,7 +10,7 @@ export default function Page() {
     const [path, setPath] = useState('')
 
     useEffect(() => {
-        setPath(location.href.split('http://localhost:3000/')[1]);
+        setPath(location.href?.split('http://localhost:3000/')[1]);
     }, [])
 
     return (

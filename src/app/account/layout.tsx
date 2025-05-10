@@ -16,7 +16,7 @@ export default function AccountLayout({
     const [path, setPath] = useState('')
 
     useEffect(() => {
-        setPath(location.href.split('http://localhost:3000/')[1]);
+        setPath(location.href?.split('http://localhost:3000/')[1]);
     }, [])
 
     return (
@@ -26,7 +26,7 @@ export default function AccountLayout({
                 <main className="w-full">
                     <SidebarTrigger />
                     <div className="w-[80%] m-auto my-4">
-                        <BreadcrumbTag  tags={path}/>
+                        <BreadcrumbTag tags={path} />
                     </div>
                     <div className="w-[90%] m-auto mt-[30px]">
                         <HeaderAdmin />

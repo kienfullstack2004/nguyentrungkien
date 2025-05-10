@@ -5,11 +5,11 @@ import Link from "next/link";
 const content = [
     {
         name: 'Trang chủ',
-        url:'/home',
+        url: '/home',
     },
     {
         name: 'Quản lý cá nhân',
-        url:'/user',
+        url: '/user',
     },
 
 ]
@@ -20,15 +20,15 @@ export function AppSidebar() {
     return (
         <Sidebar>
             <SidebarHeader>
-            <SidebarGroup>
-            <SidebarGroupLabel>TRANG QUẢN LÝ TÀI KHOẢN</SidebarGroupLabel>
-            </SidebarGroup>
+                <SidebarGroup>
+                    <SidebarGroupLabel>TRANG QUẢN LÝ TÀI KHOẢN</SidebarGroupLabel>
+                </SidebarGroup>
             </SidebarHeader>
             <SidebarContent>
                 <SidebarGroup>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            {content.map((project) => (
+                            {content?.map((project) => (
                                 <SidebarMenuItem key={project.name}>
                                     <SidebarMenuButton asChild>
                                         <Link href={project.url}>

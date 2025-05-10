@@ -24,7 +24,7 @@ export function BreadcrumbTag({ tags }: { tags: string }) {
         <BreadcrumbItem>
           <BreadcrumbLink href="/">Home</BreadcrumbLink>
         </BreadcrumbItem>
-        {hash.map((item, index) => {
+        {hash?.map((item, index) => {
           return <Fragment key={index}>
             <BreadcrumbSeparator />
             {index == hash.length - 1 && <BreadcrumbItem>
@@ -33,8 +33,8 @@ export function BreadcrumbTag({ tags }: { tags: string }) {
             {
               index !== hash.length - 1 && <Fragment key={index}>
                 <BreadcrumbItem>
-                         
-                  <BreadcrumbLink href={`/${tags.split(hash[index+1]).toString().split(',')[0]}`}>{item}</BreadcrumbLink>
+
+                  <BreadcrumbLink href={`/${tags.split(hash[index + 1]).toString().split(',')[0]}`}>{item}</BreadcrumbLink>
                 </BreadcrumbItem>
               </Fragment>
             }

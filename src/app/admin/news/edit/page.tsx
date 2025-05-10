@@ -46,7 +46,7 @@ export default function Page() {
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{invoices.map((invoice) => (
+						{invoices?.map((invoice) => (
 							<TableRow key={invoice.invoice}>
 								<TableCell className="font-medium">{invoice.invoice}</TableCell>
 								<TableCell>{invoice.paymentMethod.slice(0, 25) + "..."}</TableCell>

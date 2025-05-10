@@ -40,7 +40,7 @@ export function AppSidebar() {
                 <SidebarGroup>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            {content.map((project) => (
+                            {content?.map((project) => (
                                 <SidebarMenuItem key={project.name}>
                                     <SidebarMenuButton asChild>
                                         <Link href={project.url}>

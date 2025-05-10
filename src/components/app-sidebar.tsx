@@ -21,10 +21,10 @@ export function AppSidebar() {
     const [path, setPath] = useState('');
 
     useEffect(() => {
-        if (location.href?.split('https://nguyentrungkien.vercel.app/')[1]?.split('/').length > 1) {
-            setPath(location.href?.split('https://nguyentrungkien.vercel.app/')[1].toString()?.split('/')[0]);
+        if (location.href?.split(`${process.env.NEXT_PUBLIC_URL}`)[1]?.split('/').length > 1) {
+            setPath(location.href?.split(`${process.env.NEXT_PUBLIC_URL}`)[1].toString()?.split('/')[0]);
         } else {
-            setPath(location.href?.split('https://nguyentrungkien.vercel.app/')[1]);
+            setPath(location.href?.split(`${process.env.NEXT_PUBLIC_URL}`)[1]);
         }
     }, [])
 

@@ -6,12 +6,13 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import CountUp from 'react-countup';
 
+
 export default function Page() {
 
 	const [path, setPath] = useState('')
 
 	useEffect(() => {
-		setPath(location.href?.split('https://nguyentrungkien.vercel.app/')[1]);
+		setPath(location.href?.split(`${process.env.NEXT_PUBLIC_URL}`)[1]);
 	}, [])
 
 

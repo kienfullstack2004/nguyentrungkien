@@ -26,7 +26,7 @@ export default function Page() {
 	const [path, setPath] = useState('')
 
 	useEffect(() => {
-		setPath(location.href?.split('https://nguyentrungkien.vercel.app/')[1]);
+		setPath(location.href?.split(`${process.env.NEXT_PUBLIC_URL}`)[1]);
 	}, [])
 
 	const form = useForm<FormBodyType>({

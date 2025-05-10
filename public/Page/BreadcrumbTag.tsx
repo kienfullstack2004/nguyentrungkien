@@ -14,9 +14,8 @@ import { Fragment } from "react";
 
 export function BreadcrumbTag({ tags }: { tags: string }) {
 
-  const hash = tags.split("/");
+  const hash = tags?.split("/");
 
-  // console.log(tags.split('admin'))
 
 
   return (

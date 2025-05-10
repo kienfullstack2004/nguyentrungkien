@@ -16,8 +16,6 @@ export function BreadcrumbTag({ tags }: { tags: string }) {
 
   const hash = tags?.split("/");
 
-
-
   return (
     <Breadcrumb>
       <BreadcrumbList>

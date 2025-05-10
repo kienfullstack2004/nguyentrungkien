@@ -16,7 +16,7 @@ export default function AccountLayout({
     const [path, setPath] = useState('')
 
     useEffect(() => {
-        setPath(location.href?.split('http://localhost:3000/')[1]);
+        setPath(location.href?.split('https://nguyentrungkien.vercel.app/')[1]);
     }, [])
 
     return (

@@ -3,6 +3,18 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupConte
 import { ChevronUp, User2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { apiUserCurrent } from "../../public/services/userApi";
+import { UserCurrent, UserData } from "../../public/utils/type";
+import { useDispatch } from "react-redux";
+import { logout } from "../../public/store/action/auth";
+import reduxStore from "../../public/config/redux";
+import {redirect} from "next/navigation";
+const { store } = reduxStore();
+
+console.log(store)
+
+type AppDispatch = typeof store.dispatch
+
 
 const content = [
     {
@@ -19,6 +31,9 @@ const content = [
 export function AppSidebar() {
 
     const [path, setPath] = useState('');
+    const [userData, setUserData] = useState<UserData>();
+    const dispatch = useDispatch<AppDispatch>();
+ 
 
     useEffect(() => {
         if (location.href?.split(`${process.env.NEXT_PUBLIC_URL}`)[1]?.split('/').length > 1) {
@@ -27,6 +42,21 @@ export function AppSidebar() {
             setPath(location.href?.split(`${process.env.NEXT_PUBLIC_URL}`)[1]);
         }
     }, [])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const responsive = await apiUserCurrent() as UserCurrent;
+            if (responsive?.data?.code === 0) {
+                setUserData(responsive?.data?.users);
+            }
+        }
+        fetchData();
+    }, []);
+
+    const handdleLogout = () => {
+        dispatch(logout());
+        redirect('/login')
+    }
 
 
     return (
@@ -59,7 +89,7 @@ export function AppSidebar() {
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <SidebarMenuButton>
-                                    <User2 /> nguyễn trung kiên
+                                    <User2 /> {userData?.username}
                                     <ChevronUp className="ml-auto" />
                                 </SidebarMenuButton>
                             </DropdownMenuTrigger>
@@ -68,13 +98,14 @@ export function AppSidebar() {
                                 className="w-[--radix-popper-anchor-width]"
                             >
                                 <DropdownMenuItem>
-                                    <span>Account</span>
+                                    <Link href={'/account'}>
+                                        <span>Account</span>
+                                    </Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
-                                    <span>Billing</span>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                    <span>Sign out</span>
+                                    <div onClick={handdleLogout}>
+                                        Sign out
+                                    </div>
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>

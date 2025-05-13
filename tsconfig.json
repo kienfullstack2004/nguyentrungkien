@@ -30,6 +30,6 @@
     "public/store/reducer/rootReducer.jsx",
     "public/config/redux.jsx",
     "public/config/ProviderStore.jsx"
-  ],
+, "public/store/action/auth.tsx"  ],
   "exclude": ["node_modules"]
 }

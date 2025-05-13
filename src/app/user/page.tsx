@@ -15,6 +15,7 @@ export default function Page() {
 		setPath(location.href?.split(`${process.env.NEXT_PUBLIC_URL}`)[1]);
 	}, [])
 
+      
 
 	return (
 		<div>

@@ -8,24 +8,43 @@ import moment from "moment";
 import "moment/locale/vi";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-
+import { apiBanners, apiDeleteBanners } from "../../../../public/services/authApi";
+import { DataResBanner, DataResponse, ImgApi } from "../../../../public/utils/type";
+import { toast } from "react-toastify";
+import Toast from "../../../../public/utils/Toast";
 
 export default function Page() {
 	const [path, setPath] = useState('')
+	const [banners, setBanner] = useState<ImgApi>();
 
 	useEffect(() => {
 		setPath(location.href?.split(`${process.env.NEXT_PUBLIC_URL}`)[1]);
 	}, [])
 
-    const invoices = [
-		{
-			invoice: "1",
-			paymentStatus: "Paid",
-			totalAmount: "$250.00",
-			paymentMethod: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ea nemo ducimus modi non commodi cum, voluptas rem labore harum quod doloremque quo deleniti? Libero inventore vel autem est expedita rem?",
+	useEffect(() => {
+		const fetchData = async () => {
+			const responsive = await apiBanners() as DataResBanner;
+			if (responsive?.data?.code === 0) {
+				setBanner(responsive?.data?.banners)
+			}
 		}
-	]
+		fetchData();
+	}, []);
 
+    const handdleDelete = (id:string) => {
+        console.log(id); 
+		const fetchData = async() => {
+             const responsive = await apiDeleteBanners(id) as DataResponse;
+			 console.log(responsive)
+			if(responsive?.data?.code === 0) {
+				toast.success("Xoá thành công sản phẩm "+ id); 
+				setTimeout(()=>{
+                  location.reload();  
+				},2000)
+			}  
+		 }
+		 fetchData();
+	}
 	return (
 		<div>
 			<div className="mt-[-9px] w-full flex justify-end">
@@ -44,14 +63,14 @@ export default function Page() {
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{invoices?.map((invoice) => (
-							<TableRow key={invoice.invoice}>
-								<TableCell className="font-medium">{invoice.invoice}</TableCell>
+						{banners?.map((item,index) => (
+							<TableRow key={item.id}>
+								<TableCell className="font-medium">{index+1}</TableCell>
 								<TableCell className="flex items-center justify-center">
-									<Image src={'https://res.cloudinary.com/dp6cr7ea5/image/upload/v1745409070/person/zu3jarzz0q8lpw8rnhwf.jpg'} width={200} height={200} alt="logo" />
+									<Image src={item?.image} width={200} height={200} alt="logo" />
 								</TableCell>
-								<TableCell>{moment('2025-04-23 11:51:10').fromNow()}</TableCell>
-								<TableCell>{moment('2025-04-23 11:51:10').fromNow()}</TableCell>
+								<TableCell>{moment(item?.createdAt).fromNow()}</TableCell>
+								<TableCell>{moment(item?.updatedAt).fromNow()}</TableCell>
 								<TableCell className="text-center">
 									<div className="flex items-center gap-2 justify-center">
 										<div>
@@ -68,7 +87,7 @@ export default function Page() {
 													</AlertDialogHeader>
 													<AlertDialogFooter>
 														<AlertDialogCancel className="border border-[#ccc] hover:cursor-pointer">Huỷ</AlertDialogCancel>
-														<AlertDialogAction className="text-white hover:cursor-pointer bg-red-500">Xoá vĩnh viễn</AlertDialogAction>
+														<AlertDialogAction onClick={()=>handdleDelete(item?.id)} className="text-white hover:cursor-pointer bg-red-500">Xoá vĩnh viễn</AlertDialogAction>
 													</AlertDialogFooter>
 												</AlertDialogContent>
 											</AlertDialog>
@@ -80,6 +99,7 @@ export default function Page() {
 					</TableBody>
 				</Table>
 			</div>
+			<Toast/>
 		</div>
 	);
 }

@@ -13,6 +13,19 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { apiLogin } from "../../../public/services/authApi";
+import { DataResponse } from "../../../public/utils/type";
+import { redirect } from 'next/navigation';
+import { useDispatch } from "react-redux";
+import { login } from "../../../public/store/action/auth";
+import reduxStore from "../../../public/config/redux";
+import {toast} from "react-toastify";
+import Toast from "../../../public/utils/Toast";
+const { store } = reduxStore();
+
+console.log(store)
+
+type AppDispatch = typeof store.dispatch
 
 const FormBody = z.object({
 	email: z.string().email({ message: "Vui lòng nhập đúng theo đuôi có dạng @gmail.com" }),
@@ -22,6 +35,8 @@ const FormBody = z.object({
 type FormBodyType = z.infer<typeof FormBody>;
 
 export default function Page() {
+	const dispatch = useDispatch<AppDispatch>();
+
 
 	const form = useForm<FormBodyType>({
 		resolver: zodResolver(FormBody),
@@ -31,8 +46,15 @@ export default function Page() {
 		}
 	})
 
-	function onSubmit(data: FormBodyType) {
-	   console.log(data)	
+	async function onSubmit(data: FormBodyType) {
+		const responsive = await apiLogin(data) as DataResponse;
+		if (responsive?.data?.code === 0) {
+			dispatch(login(data))
+			toast.success("Đăng nhập thành công !"); 
+			setTimeout(() => {     
+				redirect("/home")
+			}, 1000)
+		}
 	}
 
 	return (
@@ -50,7 +72,7 @@ export default function Page() {
 									<FormControl>
 										<Input className="w-full input outline-none my-1" placeholder="Nhập email của bạn vào đây ..." {...field} />
 									</FormControl>
-									<FormMessage  className="text-red-600 mt-[-8px]"/>
+									<FormMessage className="text-red-600 mt-[-8px]" />
 								</FormItem>
 							)}
 						/>
@@ -63,7 +85,7 @@ export default function Page() {
 									<FormControl>
 										<Input type="password" className="w-full input outline-none my-4" placeholder="Nhập mật khẩu của bạn vào đây ..." {...field} />
 									</FormControl>
-									<FormMessage className="mt-[-20px] text-red-600"/>
+									<FormMessage className="mt-[-20px] text-red-600" />
 								</FormItem>
 							)}
 						/>
@@ -73,6 +95,7 @@ export default function Page() {
 					</form>
 				</Form>
 			</Card>
+			<Toast/>
 		</div>
 	);
 }

@@ -1,5 +1,4 @@
 'use client'
-
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { FormField, Form, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
@@ -8,8 +7,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { apiRegister } from "../../../public/services/authApi";
-import { useEffect } from "react";
-import { apiUsers } from "../../../public/services/userApi";
+import { redirect } from 'next/navigation'
+import { DataResponse } from "../../../public/utils/type";
 
 const FormBody = z.object({
 	email: z.string().email({ message: "Vui lòng nhập đúng theo đuôi có dạng @gmail.com" }),
@@ -20,6 +19,7 @@ const FormBody = z.object({
 type FormBodyType = z.infer<typeof FormBody>;
 
 export default function Page() {
+
 
 	const form = useForm<FormBodyType>({
 		resolver: zodResolver(FormBody),
@@ -32,17 +32,10 @@ export default function Page() {
 
 	async function onSubmit(data: FormBodyType) {
 		console.log(data)
-		const fetchData = await apiRegister(data);
-		console.log(fetchData);
+		const fetchData = await apiRegister(data) as DataResponse;
+		if(fetchData?.data?.code === 0)  
+	 	   redirect('/login')
 	}
-
-	useEffect(()=>{
-       const fetchData = async() => {
-		  const responsive = await apiUsers();
-		  console.log(responsive?.data?.users)
-	   }
-	   fetchData();
-	},[])
 
 	return (
 		<div className="h-[100vh] flex items-center justify-center">

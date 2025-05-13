@@ -4,7 +4,6 @@ import { ProviderStore } from "../../../public/config/ProviderStore";
 import { AppSidebar } from "@/components/account";
 import { HeaderAdmin } from "../../../public/Page/HeaderAdmin";
 
-
 export default function AccountLayout({
     children,
 }: Readonly<{

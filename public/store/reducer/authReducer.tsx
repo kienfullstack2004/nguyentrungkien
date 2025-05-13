@@ -1,10 +1,11 @@
 import { actionType } from "../action/actionType";
 import { ActionAuth } from "../../utils/type";
 const { LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT } = actionType;
-const initState = {
+export const initState = {
     isLoggedIn: false,
     token: null
 }
+
 
 
 const authReducer = (state = initState, action: ActionAuth ) => {

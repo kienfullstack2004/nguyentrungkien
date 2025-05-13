@@ -28,3 +28,38 @@ export const apiLogin = (payload:LoginType) => new Promise(async(relsove,reject)
         return reject(err);  
     } 
 })
+
+export const apiCreateBanner = (payload:{image:string}) => new Promise(async(relsove,reject)=>{
+    try {
+        const responsive = await axiosConfig({
+            method:'post',
+            url:'admin/banner',
+            data:payload
+        })
+        relsove(responsive);
+    } catch (error) {
+        return reject(error);
+    }
+})
+export const apiBanners = () => new Promise(async(relsove,reject)=>{
+    try {
+        const responsive = await axiosConfig({
+            method:'get',
+            url:'admin/banners',
+        })
+        relsove(responsive);
+    } catch (error) {
+        return reject(error);
+    }
+})
+export const apiDeleteBanners = (id:string) => new Promise(async(relsove,reject)=>{
+    try {
+        const responsive = await axiosConfig({
+            method:'delete',
+            url:'admin/banner/'+id,
+        })
+        relsove(responsive);
+    } catch (error) {
+        return reject(error);
+    }
+})

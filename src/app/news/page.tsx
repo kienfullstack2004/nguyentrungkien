@@ -66,15 +66,21 @@ export default function Page() {
 						</div>
 					</Link>
 					<div className="grid min-md:grid-cols-3 max-md:grid-cols-1 gap-8">
-						<Link href={'/'} className="my-3 flex flex-col">
-							<Image src={'https://res.cloudinary.com/dp6cr7ea5/image/upload/v1745409070/person/zu3jarzz0q8lpw8rnhwf.jpg'} width={500} height={500} alt="logo" />
-							<div className="font-extrabold font-mono text-justify my-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit, facilis voluptas. Totam suscipit voluptatem quas iure sequi modi cupiditate facere excepturi officia iusto ullam quasi, sed officiis qui alias mollitia.</div>
-							<div className="flex justify-end">
-								<div className="text-[#ccc] text-[12px]">
-									{moment('2025-04-23 12:33:53').fromNow()}
-								</div>
+						{posts?.map((item, index) => {
+							return <div key={index} className="">
+								<Link href={'/news/' + news?.id} className="flex flex-col">
+									{news?.image && <Image src={news?.image} className="w-full" width={300} height={300} alt="logo" />}
+									<div className="my-3 font-extrabold font-mono text-justify">
+										{news?.title}
+									</div>
+									<div className="flex justify-end">
+										<div className="text-[#ccc] text-[12px]">
+											{moment(news?.createdAt).fromNow()}
+										</div>
+									</div>
+								</Link>
 							</div>
-						</Link>
+						})}
 					</div>
 				</div>
 				<div className="min-md:w-[30%]  max-md:hidden  flex flex-col gap-4">

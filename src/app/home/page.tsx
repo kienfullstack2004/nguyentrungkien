@@ -58,6 +58,8 @@ export default function Page() {
 		fetchData();
 	}, [])
 
+   
+
 	return (
 		<div className="">
 			<div className="fixed h-[100px] z-20 left-0 right-0 top-0 bg-[#fff]">

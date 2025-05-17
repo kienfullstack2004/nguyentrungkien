@@ -1,15 +1,10 @@
 'use client';
 import {
     Menubar,
-    MenubarContent,
-    MenubarItem,
-    MenubarMenu,
-    MenubarShortcut,
-    MenubarTrigger,
+    MenubarContent, MenubarItem,MenubarMenu,MenubarShortcut,    MenubarTrigger,
 } from "@/components/ui/menubar"
 import { icons } from "../utils/icons"
 import Link from "next/link";
-
 const { RiBook2Fill } = icons;
 
 export function HeaderUser() {

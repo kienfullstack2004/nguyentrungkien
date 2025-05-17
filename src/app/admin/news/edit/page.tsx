@@ -1,31 +1,52 @@
-'use client'
-
+'use client';
 import { useEffect, useState } from "react";
 import { BreadcrumbTag } from "../../../../../public/Page/BreadcrumbTag";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import Image from "next/image";
 import moment from "moment";
+import "moment/locale/vi";
 import Link from "next/link";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { apiDeletePost, apiNews } from "../../../../../public/services/postApi";
+import { DataApi, DataResponse, DataResponsive } from "../../../../../public/utils/type";
+import Toast from "../../../../../public/utils/Toast";
+import { toast } from "react-toastify";
+
 
 
 export default function Page() {
 
 	const [path, setPath] = useState('')
+    const [news,setNews] = useState<DataApi>();
 
 	useEffect(() => {
 		setPath(location.href?.split(`${process.env.NEXT_PUBLIC_URL}`)[1]);
 	}, [])
 
-	const invoices = [
-		{
-			invoice: "1",
-			paymentStatus: "Paid",
-			totalAmount: "$250.00",
-			paymentMethod: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ea nemo ducimus modi non commodi cum, voluptas rem labore harum quod doloremque quo deleniti? Libero inventore vel autem est expedita rem?",
+	useEffect(() => {
+		const fetchData = async () => {
+			const responsive = await apiNews() as DataResponsive;
+			console.log(responsive)
+			if (responsive?.data?.code === 0) {
+                setNews(responsive?.data?.news);
+			}
 		}
-	]
+		fetchData();
+	}, []);
+
+
+	const handdleDelete = (id:string) => {
+        const data = async() => {
+            const responsive = await apiDeletePost(id) as DataResponse;
+			if(responsive?.data?.code === 0){
+			    toast.success("Xoá thành công !");
+				location.reload();
+			} 
+		}
+		data();
+	}
+
 
 	return (
 		<div>
@@ -46,18 +67,24 @@ export default function Page() {
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{invoices?.map((invoice) => (
-							<TableRow key={invoice.invoice}>
-								<TableCell className="font-medium">{invoice.invoice}</TableCell>
-								<TableCell>{invoice.paymentMethod.slice(0, 25) + "..."}</TableCell>
-								<TableCell className="flex items-center justify-center">
-									<Image src={'https://res.cloudinary.com/dp6cr7ea5/image/upload/v1745409070/person/zu3jarzz0q8lpw8rnhwf.jpg'} width={200} height={200} alt="logo" />
+						{news?.map((items,index) => (
+							<TableRow key={index}>
+								<TableCell className="font-medium">{index + 1}</TableCell>
+								<TableCell className="font-medium">{items.title.slice(0,22) + "..."}</TableCell>
+								<TableCell className="font-medium">
+									{items.image &&<Image
+										height={300}
+										width={300}
+										src={typeof items.image === "string" ? items.image : ""}
+										alt="logo"
+										className="w-[300px] h-[300px] rounded-md"
+									/>}
 								</TableCell>
-								<TableCell>{moment('2025-04-23 11:51:10').fromNow()}</TableCell>
-								<TableCell>{moment('2025-04-23 11:51:10').fromNow()}</TableCell>
+								<TableCell>{moment(items?.createdAt).fromNow()}</TableCell>
+								<TableCell>{moment(items?.updatedAt).fromNow()}</TableCell>
 								<TableCell className="text-center">
 									<div className="flex items-center gap-2 justify-center">
-										<Link href={'/admin/news/edit/' + invoice?.invoice} className="text-white px-3 py-2 rounded-md bg-blue-400 hover:cursor-pointer">Sửa</Link>
+										<Link href={'/admin/news/edit/' + items?.id} className="text-white px-3 py-2 rounded-md bg-blue-400 hover:cursor-pointer">Sửa</Link>
 										<div>
 											<AlertDialog >
 												<AlertDialogTrigger asChild>
@@ -72,7 +99,7 @@ export default function Page() {
 													</AlertDialogHeader>
 													<AlertDialogFooter>
 														<AlertDialogCancel className="border border-[#ccc] hover:cursor-pointer">Huỷ</AlertDialogCancel>
-														<AlertDialogAction className="text-white hover:cursor-pointer bg-red-500">Xoá vĩnh viễn</AlertDialogAction>
+														<AlertDialogAction onClick={()=>handdleDelete(items?.id)} className="text-white hover:cursor-pointer bg-red-500">Xoá vĩnh viễn</AlertDialogAction>
 													</AlertDialogFooter>
 												</AlertDialogContent>
 											</AlertDialog>
@@ -84,6 +111,7 @@ export default function Page() {
 					</TableBody>
 				</Table>
 			</div>
+			<Toast/>
 		</div>
 	);
 }

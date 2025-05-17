@@ -5,15 +5,19 @@ import Footer from "../../../public/partials/Footer";
 import Header from "../../../public/partials/Header";
 import moment from "moment";
 import "moment/locale/vi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { icons } from "../../../public/utils/icons";
 import Image from "next/image";
+import { apiNews } from "../../../public/services/postApi";
+import { DataApiPost, DataApiResponse, DataResponsiveNew } from "../../../public/utils/type";
 
 const { IoIosAdd, IoIosClose } = icons;
 
 export default function Page() {
 
 	const [isPage, setPage] = useState(false);
+	const [news, setNews] = useState<DataApiPost>();
+	const [posts, setPosts] = useState<DataApiResponse>();
 
 	const openPage = () => {
 		setPage(true);
@@ -23,19 +27,41 @@ export default function Page() {
 		setPage(false);
 	}
 
+	useEffect(() => {
+		const fetchData = async () => {
+			const responsive = await apiNews() as DataResponsiveNew;
+
+			responsive?.data?.news?.forEach((items, index) => {
+				if (index === 0) {
+					setNews(items);
+				}
+			})
+
+			if (responsive?.data?.code === 0) {
+				setPosts(responsive?.data?.news);
+			}
+
+
+
+		}
+
+		fetchData();
+	}, [])
+
+
 	return (
 		<div>
 			<Header />
 			<div className="w-[90%] flex gap-6 m-auto">
 				<div className="max-md:w-full min-md:w-[70%]">
-					<Link href={'/'} className="flex flex-col">
-						<Image src={'https://res.cloudinary.com/dp6cr7ea5/image/upload/v1745409070/person/zu3jarzz0q8lpw8rnhwf.jpg'} className="w-full " width={500} height={500} alt="logo" />
+					<Link href={'/news/' + news?.id} className="flex flex-col">
+						{news?.image && <Image src={news?.image} className="w-full" width={500} height={500} alt="logo" />}
 						<div className="my-3 font-extrabold font-mono text-justify">
-							Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate quae nisi obcaecati tempora iure cupiditate, tenetur suscipit numquam veniam soluta libero delectus laborum porro quam eius labore vitae beatae tempore?
+							{news?.title}
 						</div>
 						<div className="flex justify-end">
 							<div className="text-[#ccc] text-[12px]">
-								{moment('2025-04-23 12:33:53').fromNow()}
+								{moment(news?.createdAt).fromNow()}
 							</div>
 						</div>
 					</Link>
@@ -49,15 +75,16 @@ export default function Page() {
 								</div>
 							</div>
 						</Link>
-
-
 					</div>
 				</div>
 				<div className="min-md:w-[30%]  max-md:hidden  flex flex-col gap-4">
-					<Link href={'/'} className="">
-						<Image src={'https://res.cloudinary.com/dp6cr7ea5/image/upload/v1745409070/person/zu3jarzz0q8lpw8rnhwf.jpg'} width={500} height={500} alt="logo" className="object-center" />
-						<div className="text-justify">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Obcaecati veniam aliquid, repellat saepe ex at sit unde sequi odit? Saepe tempora possimus quibusdam labore commodi rerum veniam temporibus perferendis perspiciatis.</div>
-					</Link>
+					{posts?.map((item, index) => {
+						if (index !== 0)
+							return <Link href={'/news/' + item?.id} key={index} className="">
+								{item?.image && <Image src={item?.image} width={500} height={500} alt="logo" className="object-center" />}
+								<div className="text-justify">{item?.title}</div>
+							</Link>
+					})}
 
 				</div>
 				<div className="fixed bottom-2 z-10 flex justify-center bg-white shadow-2xl items-center right-2 w-[40px] h-[40px] rounded-md">

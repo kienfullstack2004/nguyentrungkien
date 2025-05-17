@@ -14,13 +14,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { apiLogin } from "../../../public/services/authApi";
-import { DataResponse } from "../../../public/utils/type";
+import { DataResponse, UserCurrent } from "../../../public/utils/type";
 import { redirect } from 'next/navigation';
 import { useDispatch } from "react-redux";
 import { login } from "../../../public/store/action/auth";
 import reduxStore from "../../../public/config/redux";
-import {toast} from "react-toastify";
-import Toast from "../../../public/utils/Toast";
+import { toast, ToastContainer } from "react-toastify";
+import { apiUserCurrent } from "../../../public/services/userApi";
 const { store } = reduxStore();
 
 console.log(store)
@@ -36,8 +36,6 @@ type FormBodyType = z.infer<typeof FormBody>;
 
 export default function Page() {
 	const dispatch = useDispatch<AppDispatch>();
-
-
 	const form = useForm<FormBodyType>({
 		resolver: zodResolver(FormBody),
 		defaultValues: {
@@ -46,14 +44,30 @@ export default function Page() {
 		}
 	})
 
+
+
 	async function onSubmit(data: FormBodyType) {
+		console.log(data)
 		const responsive = await apiLogin(data) as DataResponse;
+
+		console.log(responsive)
+
 		if (responsive?.data?.code === 0) {
 			dispatch(login(data))
-			toast.success("Đăng nhập thành công !"); 
-			setTimeout(() => {     
-				redirect("/home")
-			}, 1000)
+			const hanndleUser = async () => {
+				toast.success("Đăng nhập thành công !");
+				const responsive = await apiUserCurrent() as UserCurrent;
+				console.log(responsive?.data?.users?.role)
+				setTimeout(() => {
+					if (responsive?.data?.users?.role === "Admin"){
+						redirect("/admin")
+					}
+					else redirect("/home")
+				}, 1000)
+			}
+			hanndleUser();
+		} else {
+			toast.error(responsive?.data?.message);
 		}
 	}
 
@@ -95,7 +109,9 @@ export default function Page() {
 					</form>
 				</Form>
 			</Card>
-			<Toast/>
+			<div className="mt-3">
+				<ToastContainer />
+			</div>
 		</div>
 	);
 }

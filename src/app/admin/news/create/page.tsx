@@ -2,45 +2,70 @@
 
 import { useEffect, useState } from "react";
 import { BreadcrumbTag } from "../../../../../public/Page/BreadcrumbTag";
-
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod"
+import { Label } from "@radix-ui/react-dropdown-menu";
+import { apiCreateNew } from "../../../../../public/services/postApi";
+import { DataResponse } from "../../../../../public/utils/type";
+import { toast } from "react-toastify";
+import Toast from "../../../../../public/utils/Toast";
 
-const FormBody = z.object({
-	title: z.string().min(2, { message: "Vui lòng nhập ít nhất 100 kí tự hoặc 1 tiêu đề hoàn chỉnh" }),
-	dess: z.string().min(6, { message: "Vui lòng nhập đủ 6 kí tự !" }),
-	img: z.string().min(6, { message: 'Vui lòng không để trống !' }),
-	desshort: z.string().min(6, { message: "Vui lòng nhật ít nhất 6 từ" }),
-	viewer: z.string(),
-}).strict();
-
-type FormBodyType = z.infer<typeof FormBody>;
 
 export default function Page() {
 
 	const [path, setPath] = useState('')
+    const [news,setNews] = useState<{title:string,
+		dess:string,
+		desshort:string,
+		image:File|string,
+	}>({
+		title:"",
+		image:"",
+		dess:"",
+		desshort:""
+	})
 
 	useEffect(() => {
 		setPath(location.href?.split(`${process.env.NEXT_PUBLIC_URL}`)[1]);
+		if (typeof window !== 'undefined') {
+		}
 	}, [])
 
-	const form = useForm<FormBodyType>({
-		resolver: zodResolver(FormBody),
-		defaultValues: {
-			title: "",
-			dess: "",
-			desshort: "",
-			img: ""
-		}
-	})
+	
 
-	function onSubmit(data: FormBodyType) {
-		console.log(data)
+	async function handdleSubmit() {
+		if (news?.title !== "" && news?.dess !== "" && news?.desshort !== "" && news?.image !== "") {
+					const image = news?.image;
+					const formData = new FormData();
+					if (image) {
+						formData.append('file', image);
+					}
+					formData.append('upload_preset', `${process.env.NEXT_PUBLIC_UPLOAD_PRESET}`);
+					formData.append('cloud_name', `${process.env.NEXT_PUBLIC_CLOUD_NAME}`);
+		
+					const imgApi = await fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUD_NAME}/image/upload`, {
+						method: 'post',
+						body: formData
+					})
+					const imageUrl = await imgApi?.json();
+					const obj = {
+						title: news?.title,
+						dess: news?.dess,
+						desshort: news?.desshort,
+						image: imageUrl?.secure_url
+					}
+					const handdleCreate = async () => {
+						const responsive = await apiCreateNew(obj) as DataResponse;
+						if (responsive?.data?.code === 0) {
+							toast.success(responsive?.data?.message);
+							setTimeout(()=>{
+								 history.back();
+							},1000);
+						}
+					}
+					handdleCreate();
+				}
 	}
 
 	return (
@@ -49,70 +74,30 @@ export default function Page() {
 				<BreadcrumbTag tags={path} />
 			</div>
 			<div className="max-md:my-4">
-				<Form {...form}>
-					<form onSubmit={form.handleSubmit(onSubmit)}>
-						<FormField
-							control={form.control}
-							name="title"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Tiêu đề</FormLabel>
-									<FormControl>
-										<Input className="w-full input outline-none my-1" placeholder="Nhập email của bạn vào đây ..." {...field} />
-									</FormControl>
-									<FormMessage className="text-red-600 mt-[-8px]" />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="desshort"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel className="mt-5 mb-[-12px]">Mô tả ngắn</FormLabel>
-									<FormControl>
-										<Input className="w-full input outline-none my-4" placeholder="Nhập mô tả ngắn của bạn vào đây ..." {...field} />
-									</FormControl>
-									<FormMessage className="mt-[-20px] text-red-600" />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="dess"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel className="mt-5">Nội dung bài viết</FormLabel>
-									<FormControl>
-										<Textarea className="resize-none input h-[500px]" spellCheck={false} placeholder="Nhập mô tả của bạn vào đây ..." {...field} />
-									</FormControl>
-									<FormDescription className="text-center text-[#ccc]">
-										Nội dung bài viết phải chi tiết và đầy đủ nội dung.
-									</FormDescription>
-									<FormMessage className="mt-[-20px] text-red-600" />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="img"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel className="mt-5">Ảnh bài viết</FormLabel>
-									<FormControl>
-										<Input type="file" className="w-full input outline-none my-4" {...field} />
-									</FormControl>
-									<FormMessage className="mt-[-20px] text-red-600" />
-								</FormItem>
-							)}
-						/>
-
-						<div className="mt-4 text-center bg-[#000] text-white rounded-md hover:bg-[#ccc] hover:cursor-pointer">
-							<Button type="submit">Thêm mới bài viết</Button>
-						</div>
-					</form>
-				</Form>
-			</div>
-		</div>
+				<Label className="my-3">
+					Tiêu đề của bài viết
+				</Label>
+				<Input className="w-full input outline-none my-1" value={news?.title} onChange={e=>setNews(prev=>({...prev,title:e.target.value}))} placeholder="Nhập tiêu đề của bạn vào đây ..." />
+				<Label className="my-3">
+					Mô tả ngắn
+				</Label>
+				<Input onChange={e=>setNews(prev=>({...prev,desshort:e.target.value}))} value={news?.desshort} className="w-full input outline-none my-4" placeholder="Nhập mô tả ngắn của bạn vào đây ..." />
+				<Label className="my-3">Nội dung bài viết</Label>
+				<Textarea className="resize-none input h-[500px]" value={news?.dess} onChange={e=>setNews(prev=>({...prev,dess:e.target.value}))} spellCheck={false} placeholder="Nhập mô tả của bạn vào đây ..." />
+				<Label className="my-3">Ảnh bài viết</Label>
+				<Input type="file"
+				  onChange={e=>{
+					setNews(prev => ({
+						...prev,
+						image: e.target.files && e.target.files[0] ? e.target.files[0] : ""
+					}))
+				  }}
+				className="w-full input outline-none my-4" />
+				<div className="mt-4 text-center bg-[#000] text-white rounded-md hover:bg-[#ccc] hover:cursor-pointer">
+					<Button onClick={handdleSubmit}>Thêm mới bài viết</Button>
+				</div>
+			</div >
+			<Toast/>
+		</div >
 	);
 }

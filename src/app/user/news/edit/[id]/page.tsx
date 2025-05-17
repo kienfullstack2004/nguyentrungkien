@@ -1,130 +1,154 @@
 'use client'
-import { use } from "react";
-
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod"
-import {
-	Form,
-	FormControl,
-	FormDescription,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from "@/components/ui/form"
+import { use, useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { apiCreateNew, apiOnePost } from "../../../../../../public/services/postApi";
+import { Label } from "@/components/ui/label";
+import { DataResponse } from "../../../../../../public/utils/type";
+import { toast, ToastContainer } from "react-toastify";
 
+type DataType = {
+	title: string,
+	dess: string,
+	desshort: string,
+	image: string,
+}
 
-const FormBody = z.object({
-	title: z.string().min(2, { message: "Vui lòng nhập ít nhất 100 kí tự hoặc 1 tiêu đề hoàn chỉnh" }),
-	dess: z.string().min(6, { message: "Vui lòng nhập đủ 6 kí tự !" }),
-	img: z.string().min(6, { message: 'Vui lòng không để trống !' }),
-	desshort: z.string().min(6, { message: "Vui lòng nhật ít nhất 6 từ" }),
-	viewer: z.string(),
-}).strict();
+type DataMess = {
+	code: number,
+	message: string,
+	news: DataType
+}
 
-type FormBodyType = z.infer<typeof FormBody>;
-
+type ApiRes = {
+	data: DataMess
+}
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
 	const { id } = use(params);
+	const [news, setNews] = useState<DataType>();
+	const [image, setImage] = useState<File>();
 
-	console.log(id)
-
-	const form = useForm<FormBodyType>({
-		resolver: zodResolver(FormBody),
-		defaultValues: {
-			title: "",
-			dess: "",
-			desshort: "",
-			img: ""
+	useEffect(() => {
+		const fetchData = async () => {
+			const responsive = await apiOnePost(id) as ApiRes;
+			if (responsive?.data?.code === 0) {
+				setNews(responsive?.data?.news);
+			}
 		}
-	})
+		fetchData();
+	}, [])
 
-	function onSubmit(data: FormBodyType) {
-		console.log(data)
+
+	async function onSubmit() {
+
+
+		const imageLocal = image;
+		const formData = new FormData();
+        
+
+		if(imageLocal){
+			formData.append("file",imageLocal);
+		}
+		formData.append('upload_preset', `${process.env.NEXT_PUBLIC_UPLOAD_PRESET}`);
+			formData.append('cloud_name', `${process.env.NEXT_PUBLIC_CLOUD_NAME}`);
+
+			const fetchImage = await fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUD_NAME}/image/upload`, {
+				method: 'post',
+				body: formData
+			})
+   
+		const responsive = await fetchImage.json();
+
+		const obj = {
+			title: news?.title ?? "",
+			dess: news?.dess ?? "",
+			desshort: news?.desshort ?? "",
+			image: responsive?.secure_url ?? ""
+		}
+
+		const fetchData = async() => {
+
+           const responsive = await apiCreateNew(obj) as DataResponse;
+		   console.log(responsive?.data?.message)
+		   if(responsive?.data?.code === 0) {
+             toast.success("Đăng bài viết thành công !");
+			 setTimeout(()=>{
+                history.back();
+			 },1000)     
+		   }
+		}
+
+		fetchData();
 	}
+
 
 	return (
 		<div className="">
-			<Form {...form}>
-				<form onSubmit={form.handleSubmit(onSubmit)}>
-					<FormField
-						control={form.control}
-						name="title"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Tiêu đề</FormLabel>
-								<FormControl>
-									<Input className="w-full input outline-none my-1" placeholder="Nhập email của bạn vào đây ..." {...field} />
-								</FormControl>
-								<FormMessage className="text-red-600 mt-[-8px]" />
-							</FormItem>
-						)}
-					/>
-					<FormField
-						control={form.control}
-						name="desshort"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel className="mt-5 mb-[-12px]">Mô tả ngắn</FormLabel>
-								<FormControl>
-									<Input className="w-full input outline-none my-4" placeholder="Nhập mô tả ngắn của bạn vào đây ..." {...field} />
-								</FormControl>
-								<FormMessage className="mt-[-20px] text-red-600" />
-							</FormItem>
-						)}
-					/>
-					<FormField
-						control={form.control}
-						name="dess"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel className="mt-5">Nội dung bài viết</FormLabel>
-								<FormControl>
-									<Textarea className="resize-none input h-[500px]" spellCheck={false} placeholder="Nhập mô tả của bạn vào đây ..." {...field} />
-								</FormControl>
-								<FormDescription className="text-center text-[#ccc]">
-									Nội dung bài viết phải chi tiết và đầy đủ nội dung.
-								</FormDescription>
-								<FormMessage className="mt-[-20px] text-red-600" />
-							</FormItem>
-						)}
-					/>
-					<FormField
-						control={form.control}
-						name="img"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel className="mt-5">Ảnh bài viết</FormLabel>
-								<FormControl>
-									<Input type="file" className="w-full input outline-none my-4" {...field} />
-								</FormControl>
-								<FormMessage className="mt-[-20px] text-red-600" />
-							</FormItem>
-						)}
-					/>
-					<FormField
-						control={form.control}
-						name="viewer"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel className="mt-5">Lượt xem</FormLabel>
-								<FormControl>
-									<Input defaultValue={12} readOnly className="w-full cursor-no-drop input bg-[#ddd] outline-none my-4" {...field} />
-								</FormControl>
-								<FormMessage className="mt-[-20px] text-red-600" />
-							</FormItem>
-						)}
-					/>
-					<div className="mt-4 text-center bg-[#000] text-white rounded-md hover:bg-[#ccc] hover:cursor-pointer">
-						<Button type="submit">Cập nhật bài viết</Button>
+				<div>
+					<div>
+						<Label className="text-2xl my-2 font-bold">
+							Tiêu đề của bài viết
+						</Label>
+						<Input
+							value={news?.title ?? ""}
+							onChange={e =>
+								setNews(prev =>
+									prev
+										? { ...prev, title: e.target.value }
+										: { title: e.target.value, dess: "", desshort: "", image: "" }
+								)
+							}
+							className="w-full input outline-none my-1"
+							placeholder="Nhập title của bạn vào đây ..."
+						/>
+
 					</div>
-				</form>
-			</Form>
+					<div>
+						<Label className="text-2xl my-2 font-bold">
+							Mô tả ngắn
+						</Label>
+						<Input value={news?.desshort ?? ""}
+							onChange={e =>
+								setNews(prev =>
+									prev
+										? { ...prev, desshort: e.target.value }
+										: { title: "", dess: e.target.value, desshort: "", image: "" }
+								)
+							} spellCheck={true} className="w-full input outline-none my-4" placeholder="Nhập mô tả ngắn của bạn vào đây ..." />
+
+					</div>
+
+					<div>
+						<Label className="text-2xl my-2 font-bold">
+							Nội dung chi tiết
+						</Label>
+						<Textarea value={news?.dess ?? ""}
+							onChange={e =>
+								setNews(prev =>
+									prev
+										? { ...prev, dess: e.target.value }
+										: { title: "", dess: "", desshort: e.target.value, image: "" }
+								)
+							} className="resize-none input h-[500px]" spellCheck={false} placeholder="Nhập mô tả của bạn vào đây ..." />
+
+					</div>
+
+					<div className="flex flex-col gap-2">
+						<Label className="my-3">Ảnh bài viết</Label>
+						<Input type="file" onChange={e => {
+							if (e.target.files && e.target.files.length > 0) {
+								setImage(e.target.files[0]);
+							}
+						}} />
+					</div>
+
+					<div className="mt-4 text-center bg-[#000] text-white rounded-md hover:bg-[#ccc] hover:cursor-pointer">
+						<Button onClick={onSubmit}>Cập nhật bài viết</Button>
+					</div>
+				</div>
+			<ToastContainer/> 
 		</div>
 	);
 }

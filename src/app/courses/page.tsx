@@ -3,15 +3,20 @@
 import Link from "next/link";
 import Footer from "../../../public/partials/Footer";
 import Header from "../../../public/partials/Header";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { icons } from "../../../public/utils/icons";
 import Image from "next/image";
+import { apiCousrses } from "../../../public/services/authApi";
+import { DataResponsiveCourses, DataTypeCourses } from "../../../public/utils/type";
 
 const { IoIosAdd, IoIosClose } = icons;
+
+
 
 export default function Page() {
 
 	const [isPage, setPage] = useState(false);
+	const [courses, setCousres] = useState<DataTypeCourses>();
 
 	const openPage = () => {
 		setPage(true);
@@ -21,21 +26,35 @@ export default function Page() {
 		setPage(false);
 	}
 
+	useEffect(() => {
+		const fetchData = async () => {
+			const responsive = await apiCousrses() as DataResponsiveCourses;
+			if (responsive?.data?.code === 0) {
+				setCousres(responsive?.data?.courses)
+			}
+		}
+		fetchData();
+	}, [])
+
 	return (
 		<div>
 			<Header />
 			<div className="w-[90%] m-auto">
 				<div className="grid min-md:grid-cols-4 max-md:grid-cols-1 gap-2">
-
-					<Link href={'/'}>
-						<div className="flex flex-col">
-							<Image src={'https://res.cloudinary.com/dp6cr7ea5/image/upload/v1745409070/person/zu3jarzz0q8lpw8rnhwf.jpg'} height={500} width={500}  alt="logo" />
-							<div className="font-bold font-mono my-3 text-[16px] flex items-center gap-2"><span>1.200.000</span> <span className="line-through text-[12px] text-red-500">1.500.000</span></div>
-							<div className="font-bold font-mono">Khoá học Fullstack</div>
+					{courses?.map((item, index) => {
+						return <div key={index}>
+							<Link href={'/courses/' + item?.id}>
+								<div className="flex flex-col">
+									{item?.image && <Image src={item?.image} height={500} width={500} alt="logo" />}
+									<div className="font-bold font-mono my-3 text-[16px] flex items-center gap-2"><span>{+item?.price * +item?.price_sale}</span> <span className="line-through text-[12px] text-red-500">{item?.price}</span></div>
+									<div className="font-bold font-mono">{item?.title}</div>
+								</div>
+							</Link>
 						</div>
-					</Link>
-					
-					
+
+					})}
+
+
 
 
 				</div>

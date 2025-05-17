@@ -12,8 +12,7 @@ import { UserCurrent, UserData } from "../utils/type";
 import Image from "next/image";
 import moment from "moment";
 import "moment/locale/vi";
-import { useDispatch, useSelector } from "react-redux";
-import rootReducer from "../store/reducer/rootReducer"; // Ensure this type reflects your Redux store structure
+import { useDispatch } from "react-redux"; // Ensure this type reflects your Redux store structure
 import { logout } from "../store/action/auth";
 import reduxStore from "../config/redux";
 const { FaUserEdit, FaBell, BiSolidMessageRoundedDetail, IoMdLogOut, HiMenu } = icons;
@@ -25,19 +24,20 @@ console.log(store)
 
 type AppDistach = typeof store.dispatch;
 
-export type RootState = typeof rootReducer;
+
+
+
 
 export default function Header() {
+
 
     const [isMenu, setMenu] = useState(false);
     const [isBell, setBell] = useState(false);
     const [isMessage, setMessage] = useState(false);
     const [isAccount, setAccount] = useState(false);
     const [userData,setUserData] = useState<UserData>();
-    const {isLoggedIn} = useSelector((state: RootState) => state?.auth);
     const dispatch = useDispatch<AppDistach>();
-
-    console.log(isLoggedIn)
+    const [isLoggedIn,setIsLoggedIn] = useState('');
 
     const handdleClose = () => {
         setMenu(false);
@@ -46,6 +46,20 @@ export default function Header() {
     const handdleMenu = () => {
         setMenu(true);
     }
+
+  
+
+    useEffect(()=>{
+       const logggedIn =  () => {
+           if(localStorage.getItem("persist:auth")){
+               const authData = localStorage.getItem("persist:auth");
+               const isLoggedIn = authData ? JSON.parse(authData)?.isLoggedIn : null;
+               setIsLoggedIn(isLoggedIn)
+           }
+
+       }
+       logggedIn();
+    },[])
 
     useEffect(() => {
         AOS.init();
@@ -60,6 +74,12 @@ export default function Header() {
     const openAccount = () => {
         setAccount(!isAccount)
     }
+
+    useEffect(()=>{
+      if (typeof window !== 'undefined'){
+
+      }
+    },[])
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -96,10 +116,10 @@ export default function Header() {
                     </li>
                 </ul>
             </div>
-           {isLoggedIn && <ul className="max-md:hidden gap-[35px] flex items-center">
+           {isLoggedIn === "true" && <ul className="max-md:hidden gap-[35px] flex items-center">
                 <li className="relative">
                     <FaBell onClick={openBell} size={25} />
-                    <div className="absolute top-[-5px] right-0 text-[12px] w-[15px] h-[15px] rounded-full flex items-center justify-center text-white bg-red-600">
+                    <div className="absolute z-30 top-[-5px] right-0 text-[12px] w-[15px] h-[15px] rounded-full flex items-center justify-center text-white bg-red-600">
                         2
                     </div>
                     {isBell && <div data-aos="fade-down" className="absolute right-[-2px] text-[12px] bg-[#fff] shadow-2xl min-md:w-[500px] rounded-md flex flex-col justify-center">
@@ -136,7 +156,7 @@ export default function Header() {
                 </li>
                 <li className="relative">
                     <BiSolidMessageRoundedDetail onClick={openMessge} size={25} />
-                    <div className="absolute top-[-5px] right-[-2px] text-[12px] w-[15px] h-[15px] rounded-full flex items-center justify-center text-white bg-red-600">
+                    <div className="absolute z-20 top-[-5px] right-[-2px] text-[12px] w-[15px] h-[15px] rounded-full flex items-center justify-center text-white bg-red-600">
                         2
                     </div>
                     {isMessage && <div data-aos="fade-down" className="absolute right-[-2px] text-[12px] bg-[#fff] shadow-2xl min-md:w-[500px] rounded-md flex flex-col justify-center">
@@ -217,10 +237,13 @@ export default function Header() {
                         </div>
                         <ul className="flex flex-col">
                             <li className="hover:bg-[#ddd]">
-                                <Link href="/user" className="flex p-4 gap-3"><div><FaUserEdit size={20} /></div><span>Quản lý tài khoản</span></Link>
+                                <Link href={userData?.role === "Admin" ? "/admin" : "/user"} className="flex p-4 gap-3"><div><FaUserEdit size={20} /></div><span>Quản lý tài khoản</span></Link>
                             </li>
                             <li className="hover:bg-[#ddd]">
-                                <div className="flex p-4 gap-3 hover:cursor-pointer" onClick={() => dispatch(logout())}><div ><IoMdLogOut size={20} /></div><span>Đăng xuất</span></div>
+                                <div className="flex p-4 gap-3 hover:cursor-pointer" onClick={() => {
+                                    dispatch(logout())
+                                    location.reload();
+                                }}><div ><IoMdLogOut size={20} /></div><span>Đăng xuất</span></div>
                             </li>
                         </ul>
                     </div>}
@@ -233,9 +256,9 @@ export default function Header() {
             <div className="flex  m-auto min-md:hidden">
                 <Search />
             </div>
-            <div >
+            {isLoggedIn === "true" && <div >
                 <HiMenu onClick={handdleMenu} size={30} color="#000" />
-            </div>
+            </div>}
         </div>
         {isMenu && <div data-aos="fade-left"
             data-aos-anchor="#example-anchor"
@@ -244,20 +267,22 @@ export default function Header() {
             <div className="flex w-[80%] h-[30%] items-center m-auto">
                 <div className="flex flex-col items-center gap-3">
                     <div className="">
-                        <Avatar className="w-[80px] h-[80px]">
-                            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                            <AvatarFallback>CN</AvatarFallback>
-                        </Avatar>
+                       {userData?.avatar ? <div  className="w-[80px] h-[80px] rounded-full">
+                        <Image src={typeof userData?.avatar === 'string' ? userData.avatar : ''} width={80} className="w-[80px] h-[80px] rounded-full" height={80} alt="logo" />
+                    </div> : <Avatar>
+                        <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                        <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>}
                     </div>
                     <div className="flex text-[18px] flex-col">
                         <div className="flex">
-                            <h1 className="font-bold">Username : </h1> <span>nguyentrungkien</span>
+                            <h1 className="font-bold">Username : </h1> <span>{userData?.username}</span>
                         </div>
                         <div className="flex"   >
-                            <h1 className="font-bold">Mã code : </h1> <span>{`dcdaskljcdnskljcndsk`.slice(0, 20) + '...'}</span>
+                            <h1 className="font-bold">Mã code : </h1> <span>{userData?.id?.slice(0, 20) + '...'}</span>
                         </div>
                         <div className="flex">
-                            <h1 className="font-bold">Email : </h1> <span>nkien9450@gmail.com</span>
+                            <h1 className="font-bold">Email : </h1> <span>{userData?.email}</span>
                         </div>
                     </div>
                 </div>
@@ -267,10 +292,12 @@ export default function Header() {
                     <li className="py-4 px-12 hover:bg-[#ddd]">
                         <Link href="#" className="flex gap-2 items-center"><FaUserEdit size={20} /> Quản lý tài khoản cá nhân</Link>
                     </li>
-                    <li className="py-4 px-12 hover:bg-[#ddd]">
-                        <Link href="#" className="flex gap-2 items-center"><FaUserEdit size={20} /> Quản lý tài khoản cá nhân</Link>
-                    </li>
-                    <li className="py-4 px-12 hover:bg-[#ddd]">
+                    <li className="py-4 px-12 hover:bg-[#ddd]" onClick={()=>
+                        {
+                            dispatch(logout())
+                            location.reload();
+                        }
+                    }>
                         <Link href="#" className="flex gap-2 items-center"><IoMdLogOut size={20} /> Đăng xuất</Link>
                     </li>
                 </ul>

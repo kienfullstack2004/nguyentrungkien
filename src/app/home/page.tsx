@@ -10,14 +10,37 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import PostPopular from "../../../public/Page/PostPopular";
 import { icons } from "../../../public/utils/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { apiBanners } from "../../../public/services/authApi";
+import Image from "next/image";
+
 
 const { IoIosAdd, IoIosClose } = icons;
+
+type DataType = [
+	{ image: string }
+]
+
+
+type BannerRes = {
+	code: number,
+	message: string,
+	banners: DataType
+}
+
+type BannerReposne = {
+	data: BannerRes
+}
+
+
+
 
 export default function Page() {
 
 	const [isPage, setPage] = useState(false);
+	const [banners, setBanners] = useState<DataType>();
+
 
 	const openPage = () => {
 		setPage(true);
@@ -27,11 +50,21 @@ export default function Page() {
 		setPage(false);
 	}
 
+	useEffect(() => {
+		const fetchData = async () => {
+			const responsive = await apiBanners() as BannerReposne;
+			if (responsive?.data?.code === 0) setBanners(responsive?.data?.banners)
+		}
+		fetchData();
+	}, [])
+
 	return (
 		<div className="">
-			<Header />
-			<div className="flex flex-col my-12 w-[90%] m-auto">
-				<div className="overflow-hidden">
+			<div className="fixed h-[100px] z-20 left-0 right-0 top-0 bg-[#fff]">
+				<Header />
+			</div>
+			<div className="flex clear-start mt-[100px] flex-col my-12 w-[90%] m-auto">
+				<div className="">
 					<Swiper
 						modules={[Navigation, Pagination, Scrollbar, A11y]}
 						spaceBetween={50}
@@ -39,12 +72,14 @@ export default function Page() {
 						navigation
 						pagination={{ clickable: true }}
 						scrollbar={{ draggable: true }}
-						className="h-[250px]"
+						className="h-[350px] z-0"
 					>
-						<SwiperSlide>Slide 1</SwiperSlide>
-						<SwiperSlide>Slide 2</SwiperSlide>
-						<SwiperSlide>Slide 3</SwiperSlide>
-						<SwiperSlide>Slide 4</SwiperSlide>
+						{banners?.map((item) => {
+							return <SwiperSlide key={item?.image}>
+								<Image src={item?.image} width={1200} className="w-full object-cover" height={350} alt="logo" />
+							</SwiperSlide>
+
+						})}
 					</Swiper>
 				</div>
 				<div className="my-12">

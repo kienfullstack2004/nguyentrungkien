@@ -44,3 +44,52 @@ export const apiUpdateUserCurrent = (payload: {
     }
 })
 
+export const apiCreateComment = (payload:{message:string,code:string}) => new Promise(async(relsove,reject)=>{
+    try {
+        const responsive = await axiosConfig({
+            method:"post",
+            url:"public/comment",
+            data:payload
+        })
+        relsove(responsive);
+    } catch (error) {
+        return reject(error);
+    }
+})
+
+export const apiComments = (id:string) => new Promise(async(resolve,reject)=>{
+    try {
+        const responsive = await axiosConfig({
+            method:"get",
+            url:"public/comments/"+id
+        })
+        resolve(responsive)
+    } catch (error) {
+        return reject(error);
+    }
+}) 
+
+export const apiCreateYoutube = (payload:{code:string,type:string,log:string}) => new Promise(async(relsove,reject)=>{
+    try {
+        const responsive = await axiosConfig({
+            method:"post",
+            url:"public/createYtbs",
+            data:payload
+        });
+        relsove(responsive);
+    } catch (error) {
+        return reject(error);
+    }
+})
+
+export const apiYoutubes = () => new Promise(async(relsove,reject)=>{
+    try {
+        const responsive = await axiosConfig({
+            method:"get",
+            url:"public/ytbs",
+        });
+        relsove(responsive);
+    } catch (error) {
+        return reject(error);
+    }
+})

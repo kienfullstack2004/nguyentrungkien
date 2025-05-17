@@ -9,6 +9,8 @@ import { z } from "zod";
 import { apiRegister } from "../../../public/services/authApi";
 import { redirect } from 'next/navigation'
 import { DataResponse } from "../../../public/utils/type";
+import Toast from "../../../public/utils/Toast";
+import { toast } from "react-toastify";
 
 const FormBody = z.object({
 	email: z.string().email({ message: "Vui lòng nhập đúng theo đuôi có dạng @gmail.com" }),
@@ -31,10 +33,15 @@ export default function Page() {
 	})
 
 	async function onSubmit(data: FormBodyType) {
-		console.log(data)
 		const fetchData = await apiRegister(data) as DataResponse;
-		if(fetchData?.data?.code === 0)  
-	 	   redirect('/login')
+		if(fetchData?.data?.code === 0){
+			toast.success(fetchData?.data?.message);
+			setTimeout(()=>{
+				redirect('/login') 
+			},1000) 
+		}  
+	 	   
+
 	}
 
 	return (
@@ -88,6 +95,7 @@ export default function Page() {
 					</form>
 				</Form>
 			</Card>
+			<Toast/>
 		</div>)
 
 }

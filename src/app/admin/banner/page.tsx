@@ -32,7 +32,6 @@ export default function Page() {
 	}, []);
 
     const handdleDelete = (id:string) => {
-        console.log(id); 
 		const fetchData = async() => {
              const responsive = await apiDeleteBanners(id) as DataResponse;
 			 console.log(responsive)
